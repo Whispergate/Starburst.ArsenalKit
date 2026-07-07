@@ -77,7 +77,3 @@ This kit is **external** to the Starburst agent source tree. It provides:
 3. **Operator utilities** — offset calculators, hash generators, payload encoders
 
 The agent itself is built via Mythic's payload builder (or manually via Makefile). This kit supplements that workflow.
-
-## Authors
-
-- [@Lavender-exe](https://github.com/Lavender-exe)
