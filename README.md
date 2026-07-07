@@ -1,6 +1,6 @@
 # Starburst Arsenal Kit
 
-Operator customization kit for the [Starburst](https://github.com/Whispergate/Starburst) Mythic agent. Provides delivery templates, injection techniques, sleep evasion profiles, artifact wrappers, and operator utilities — adapted from Cobalt Strike's Arsenal Kit pattern for Mythic.
+Operator customization kit for the [Starburst](https://github.com/Whispergate/Starburst) Mythic agent. Provides delivery templates, injection techniques, sleep evasion profiles, artifact wrappers, and operator utilities.
 
 ## Kit Overview
 
@@ -15,7 +15,7 @@ Operator customization kit for the [Starburst](https://github.com/Whispergate/St
 
 ## Quick Start
 
-### 1. Sleep Mask Kit — Custom Call Stack Spoof Profile
+### 1. Sleep Mask Kit - Custom Call Stack Spoof Profile
 
 ```bash
 # Calculate offsets on your target Windows version
@@ -30,26 +30,26 @@ cp sleep-mask-kit/profiles/threadpool_3frame.h \
 # Build with: spoof_profile = custom
 ```
 
-### 2. Resource Kit — Deploy Starburst Shellcode
+### 2. Resource Kit - Deploy Starburst Shellcode
 
 ```powershell
 # Generate Starburst .bin via Mythic (output_type = bin), then:
 
-# PowerShell — VirtualAlloc + CreateThread
+# PowerShell - VirtualAlloc + CreateThread
 powershell -ep bypass -f resource-kit/powershell/stager_valloc.ps1
 
-# C# — NtCreateSection + NtMapViewOfSection
+# C# - NtCreateSection + NtMapViewOfSection
 csc /unsafe /out:loader.exe resource-kit/csharp/SectionLoader.cs
 
-# Python — ctypes VirtualAlloc
+# Python - ctypes VirtualAlloc
 python resource-kit/python/stager_ctypes.py payload.bin
 ```
 
-### 3. Injection Kit — Swap Injection Technique
+### 3. Injection Kit - Swap Injection Technique
 
 Replace default `CreateRemoteThread` in `cmd_shinject.cc` or `cmd_migrate.cc` with alternative technique from `injection-kit/techniques/`.
 
-### 4. Artifact Kit — Custom Wrappers
+### 4. Artifact Kit - Custom Wrappers
 
 ```bash
 # Compile EXE wrapper with pipe bypass
@@ -72,8 +72,8 @@ x86_64-w64-mingw32-gcc -O2 -s -shared artifact-kit/src/main_dll.c \
 
 This kit is **external** to the Starburst agent source tree. It provides:
 
-1. **Pre-deployment tools** — stagers and wrappers that deliver Starburst shellcode to target
-2. **Agent source patches** — drop-in `.h` files for `spoof_profiles.h`, injection technique replacements
-3. **Operator utilities** — offset calculators, hash generators, payload encoders
+1. **Pre-deployment tools** - stagers and wrappers that deliver Starburst shellcode to target
+2. **Agent source patches** - drop-in `.h` files for `spoof_profiles.h`, injection technique replacements
+3. **Operator utilities** - offset calculators, hash generators, payload encoders
 
 The agent itself is built via Mythic's payload builder (or manually via Makefile). This kit supplements that workflow.

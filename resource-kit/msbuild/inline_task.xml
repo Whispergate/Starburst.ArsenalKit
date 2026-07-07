@@ -8,7 +8,7 @@
          application whitelisting (AppLocker, WDAC).
        - The inline task compiles and executes C# code at runtime.
        - MSBuild.exe loading clr.dll and compiling code is observable.
-       - The XML file on disk is a forensic artifact — clean up after use.
+       - The XML file on disk is a forensic artifact - clean up after use.
        - Parent process will be MSBuild.exe, which may be unusual for the
          environment.
        - ETW events for .NET JIT compilation will be generated.

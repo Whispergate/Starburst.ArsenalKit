@@ -11,7 +11,7 @@ OPSEC Notes:
     - The VirtualAlloc + CreateThread sequence is a known shellcode pattern.
     - Python bytecode (.pyc) may be cached and leave forensic artifacts.
     - Consider compiling to .exe with PyInstaller for better blending.
-    - The shellcode file is read from disk — ensure it is cleaned up.
+    - The shellcode file is read from disk - ensure it is cleaned up.
     - Memory allocation size matching shellcode size is an indicator.
 ============================================================================
 """

