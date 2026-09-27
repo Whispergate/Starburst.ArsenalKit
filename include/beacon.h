@@ -1,5 +1,5 @@
 /*
- * beacon.h — Starburst BOF compatibility header
+ * beacon.h - Starburst BOF compatibility header
  *
  * Provides the Beacon API shim for BOFs executed via execute_coff.
  * The agent resolves these symbols at runtime and patches the

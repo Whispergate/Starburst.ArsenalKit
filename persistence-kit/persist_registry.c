@@ -1,5 +1,5 @@
 /*
- * persist_registry.c — Add or remove Run key persistence
+ * persist_registry.c - Add or remove Run key persistence
  *
  * Args: action  (string: "install" / "remove")
  *       key_name (string: registry value name)

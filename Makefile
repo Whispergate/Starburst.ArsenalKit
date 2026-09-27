@@ -1,10 +1,10 @@
-# Starburst ArsenalKit — BOF Cross-Compilation Makefile
+# Starburst ArsenalKit - BOF Cross-Compilation Makefile
 #
 # Usage:
-#   make              — build all BOFs (x64)
-#   make ARCH=x86     — build all BOFs (x86)
-#   make clean        — remove all build artifacts
-#   make process-kit  — build only process-kit BOFs
+#   make              - build all BOFs (x64)
+#   make ARCH=x86     - build all BOFs (x86)
+#   make clean        - remove all build artifacts
+#   make process-kit  - build only process-kit BOFs
 #
 # Requirements: mingw-w64 cross-compiler (x86_64-w64-mingw32-gcc)
 

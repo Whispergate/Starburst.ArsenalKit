@@ -1,11 +1,11 @@
 /*
- * enum_pipes.c — Enumerate named pipes on the system
+ * enum_pipes.c - Enumerate named pipes on the system
  *
  * Uses FindFirstFileA / FindNextFileA on \\.\pipe\* to list
  * all named pipes currently present. Optionally filters by a
  * substring if one is provided as an argument.
  *
- * Args: [optional] filter string — only pipes containing this
+ * Args: [optional] filter string - only pipes containing this
  *       substring (case-insensitive) are printed
  */
 
@@ -34,7 +34,7 @@ static int stristr(const char* haystack, const char* needle)
         while (*h && *n) {
             char hc = *h;
             char nc = *n;
-            /* tolower inline — avoid extra DFR for ctype */
+            /* tolower inline - avoid extra DFR for ctype */
             if (hc >= 'A' && hc <= 'Z') hc += 32;
             if (nc >= 'A' && nc <= 'Z') nc += 32;
             if (hc != nc) break;

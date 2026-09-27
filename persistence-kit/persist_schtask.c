@@ -1,5 +1,5 @@
 /*
- * persist_schtask.c — Create or delete scheduled tasks via schtasks.exe
+ * persist_schtask.c - Create or delete scheduled tasks via schtasks.exe
  *
  * Args: action  (string: "create" / "delete")
  *       task_name (string)

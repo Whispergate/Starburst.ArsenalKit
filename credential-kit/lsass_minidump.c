@@ -1,8 +1,8 @@
 /*
- * lsass_minidump.c — MiniDump lsass.exe process memory
+ * lsass_minidump.c - MiniDump lsass.exe process memory
  *
  * Requires: Administrator privileges + SeDebugPrivilege
- * Args:     output_path (string, optional — defaults to %TEMP%\d.dmp)
+ * Args:     output_path (string, optional - defaults to %TEMP%\d.dmp)
  */
 
 #include <windows.h>

@@ -1,5 +1,5 @@
 /*
- * enum_drivers.c — Enumerate loaded kernel drivers via NtQuerySystemInformation
+ * enum_drivers.c - Enumerate loaded kernel drivers via NtQuerySystemInformation
  *
  * Queries SystemModuleInformation (class 11) to list every loaded
  * kernel module with base address, image size, and file name.

