@@ -1,0 +1,12 @@
+[submodule "sleepmask-vs"]
+	path = sleepmask-vs
+	url = https://github.com/Whispergate/sleepmask-vs
+[submodule "Starburst.UDRL-VS"]
+	path = Starburst.UDRL-VS
+	url = https://github.com/Whispergate/Starburst.UDRL-VS
+[submodule "Starburst.CrystalKit"]
+	path = Starburst.CrystalKit
+	url = https://github.com/Whispergate/Starburst.CrystalKit
+[submodule "bof-vs"]
+	path = bof-vs
+	url = https://github.com/Whispergate/bof-vs
